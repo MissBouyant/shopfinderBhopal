@@ -1,0 +1,151 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopFinder - Home</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Welcome to ShopFinder</h1>
+    <nav>
+      <a href="signup.html">Sign Up</a>
+      <a href="login.html">Login</a>
+      <a href="business-list.html">View Businesses</a>
+    </nav>
+  </header>
+  <main>
+    <p>This platform helps you find local businesses in Bhopal. Shop owners can register and list their services for just ₹50.</p>
+  </main>
+</body>
+</html>
+
+<!-- signup.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - ShopFinder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Sign Up</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+  <main>
+    <form id="signupForm">
+      <input type="text" id="signupName" placeholder="Full Name" required />
+      <input type="email" id="signupEmail" placeholder="Email" required />
+      <input type="password" id="signupPassword" placeholder="Password" required />
+      <button type="submit">Sign Up</button>
+    </form>
+  </main>
+  <script>
+    document.getElementById("signupForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = document.getElementById("signupName").value;
+      const email = document.getElementById("signupEmail").value;
+      const password = document.getElementById("signupPassword").value;
+
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      users.push({ name, email, password, hasPaid: false });
+      localStorage.setItem("users", JSON.stringify(users));
+
+      alert("Sign up successful! Please log in.");
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>
+
+<!-- payment.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment - ShopFinder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Payment</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="business-list.html">View Businesses</a>
+    </nav>
+  </header>
+  <main>
+    <p>Pay ₹50 to add your business.</p>
+    <button id="payButton">Pay Now</button>
+  </main>
+  <script>
+    document.getElementById("payButton").addEventListener("click", function () {
+      let user = JSON.parse(localStorage.getItem("loggedInUser"));
+      if (user) {
+        user.hasPaid = true;
+        const users = JSON.parse(localStorage.getItem("users"));
+        const index = users.findIndex(u => u.email === user.email);
+        users[index] = user;
+        localStorage.setItem("users", JSON.stringify(users));
+        localStorage.setItem("loggedInUser", JSON.stringify(user));
+        alert("Payment successful! You can now add your business.");
+        window.location.href = "add-business.html";
+      }
+    });
+  </script>
+</body>
+</html>
+
+<!-- style.css -->
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f2f2f2;
+}
+header {
+  background: #007BFF;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+nav a {
+  margin: 0 10px;
+  color: white;
+  text-decoration: none;
+}
+main {
+  padding: 20px;
+}
+input, textarea, button {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  max-width: 400px;
+}
+.business-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 10px 0;
+  background: #fff;
+}
+.pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+.pagination button {
+  margin: 0 5px;
+  padding: 6px 12px;
+}
+
+<!-- Remaining pages like login.html, add-business.html, business-list.html are already present in your project -->
